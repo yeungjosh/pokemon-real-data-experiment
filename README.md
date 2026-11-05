@@ -9,17 +9,33 @@ Compare synthetic data training vs real battle data training to see if learned f
 ## Setup
 
 ```bash
-pip install requests
+python -m venv venv && source venv/bin/activate
+pip install -r requirements.txt   # requests, pandas, numpy, scikit-learn, joblib
 ```
+
+Run all commands from the repository root (the scripts use relative paths such as `data/replays/` and import from `src/`).
 
 ## Scraping
 
+Two scrapers are provided. Both target the `gen9ou` tier.
+
 ```bash
-# Test with 50 replays first (~1 minute)
+# Sequential-ID scraper. TARGET_REPLAYS defaults to 10 (a smoke test) and
+# MIN_RATING to 1000; edit the constants at the top of the file to scale up.
+# Appends to data/replays/battles.jsonl
 python scrape_replays.py
 
-# Will fetch from gen9ou tier, rating 1400+
-# Saves to data/replays/battles.jsonl
+# Faster scraper using the replay search API (TARGET_REPLAYS = 5000 by default).
+# Overwrites data/replays/battles_fast.jsonl
+python scrape_fast.py
+```
+
+## Training
+
+```bash
+# Reads data/replays/battles_fast.jsonl, fits a GradientBoostingRegressor on the
+# 7 team features, prints feature importances, and saves models/real_data_model.pkl
+python train_on_real_data.py
 ```
 
 ## Time Estimates
