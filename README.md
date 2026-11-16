@@ -38,6 +38,15 @@ python scrape_fast.py
 python train_on_real_data.py
 ```
 
+## Tests
+
+Unit tests cover the type chart and type-coverage scoring:
+
+```bash
+pip install pytest
+pytest
+```
+
 ## Time Estimates
 
 - **50 replays:** ~5-10 minutes (test run)
